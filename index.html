@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Strings in C — A Beginner's Personal Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="page">
+
+  <div class="hero">
+    <h1>Strings in C</h1>
+    <p class="sub">a beginner's personal guide</p>
+    <p class="byline">By <strong>Akriti Singh</strong> — 1st Semester BCA student</p>
+  </div>
+
+  <p class="note">I'm sharing my actual learning notes from the past lab sessions. When I started C, storing numbers was pretty basic and simple, but strings were very different — difficult to understand at first. Here are my learnings, shared as I wrote them down.</p>
+
+  <section>
+    <h2>1. From numbers to words</h2>
+    <p>In the initial lectures of C programming, everything was about integers and floats — calculating average marks or checking passing grades using conditional statements. Then my professor introduced strings and their functions. That's when I realized: there's more to it.</p>
+    <div class="callout">
+      <span class="tag">the core idea</span>
+      <p>A string is essentially a collection of characters — letters, symbols, or numbers — treated as a single text unit. Words like "AKRITI" or "BENGALURU" are strings. But behind the scenes, C stores them using an array of type <code>char</code>.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>2. What is a string in C?</h2>
+    <p>A string is really a character array, where each character sits in its own slot in memory, one after another. For instance, when we declare:</p>
+    <div class="code-block">char arr[] = "Akriti";</div>
+    <p>Here is how C actually stores it inside the computer's memory cells:</p>
+    <div class="memory-strip">
+      <div class="cell"><span class="ch">A</span><span class="idx">[0]</span></div>
+      <div class="cell"><span class="ch">K</span><span class="idx">[1]</span></div>
+      <div class="cell"><span class="ch">R</span><span class="idx">[2]</span></div>
+      <div class="cell"><span class="ch">I</span><span class="idx">[3]</span></div>
+      <div class="cell"><span class="ch">T</span><span class="idx">[4]</span></div>
+      <div class="cell"><span class="ch">I</span><span class="idx">[5]</span></div>
+      <div class="cell null-byte"><span class="ch">\0</span><span class="idx">[6]</span></div>
+    </div>
+    <p class="strip-caption">seven memory cells for a six-letter word — notice index [6]</p>
+  </section>
+
+  <section>
+    <h2>3. The twist: the null character</h2>
+    <p>That extra cell at index [6] holding <code>\0</code> is the <strong class="key">null character</strong> — one of the most confusing things for me at first. Because C character arrays don't automatically keep track of their own size, C uses <code>\0</code> as a stop signal that tells the compiler where the text ends. Without it, your program would keep reading random garbage memory past your actual text.</p>
+    <div class="callout">
+      <span class="tag">did you know?</span>
+      <p>A word with 6 letters (like "AKRITI") actually requires 7 memory slots in C. You must always allocate one extra space for the hidden <code>\0</code> byte, or your program will return garbage values or weird output.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>4. Declaring and initializing strings</h2>
+    <p>You can declare a string in two simple ways:</p>
+    <div class="code-block">char name[20];
+char name[] = "BCA Student";</div>
+    <table>
+      <thead><tr><th>Declaration</th><th>Meaning</th></tr></thead>
+      <tbody>
+        <tr><td><code>char name[20];</code></td><td>Reserves space for up to 19 characters + 1 null character.</td></tr>
+        <tr><td><code>char name[] = "BCA Student";</code></td><td>Automatically calculates size — 11 characters + 1 = 12 bytes.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>5. Taking string input</h2>
+    <p>One common beginner point: a string stored in a character array is entered differently from a normal integer variable.</p>
+    <div class="code-block">scanf("%s", firstName);</div>
+    <div class="callout">
+      <span class="tag">watch out</span>
+      <p>We wrote <code>scanf("%s", firstName);</code> without an ampersand (<code>&amp;</code>). That's because an array name itself acts as a memory address pointer — adding <code>&amp;</code> is a habit from integers that beginners often accidentally repeat here.</p>
+    </div>
+    <h3>a small memory reminder</h3>
+    <p>The easiest way to remember strings: characters are stored one after another, and <code>\0</code> marks where the string ends.</p>
+  </section>
+
+  <section>
+    <h2>6. Handy functions in &lt;string.h&gt;</h2>
+    <p>Instead of manually counting characters using loops, C gives us standard built-in functions inside the <code>#include &lt;string.h&gt;</code> header file:</p>
+    <table class="fn-table">
+      <thead><tr><th>Function</th><th>Syntax</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td><code>strlen()</code></td><td><code>strlen(string);</code></td><td>Finds the length of a string</td></tr>
+        <tr><td><code>strcpy()</code></td><td><code>strcpy(dest, src);</code></td><td>Copies the source string to destination</td></tr>
+        <tr><td><code>strncpy()</code></td><td><code>strncpy(dest, src, n);</code></td><td>Copies up to n characters</td></tr>
+        <tr><td><code>strcat()</code></td><td><code>strcat(s1, s2);</code></td><td>Joins / appends string2 to string1</td></tr>
+        <tr><td><code>strncat()</code></td><td><code>strncat(s1, s2, n);</code></td><td>Joins up to n characters of string2</td></tr>
+        <tr><td><code>strcmp()</code></td><td><code>strcmp(s1, s2);</code></td><td>Compares two strings — 0 if equal, &lt;0 if s1 before s2, &gt;0 if s1 after s2</td></tr>
+        <tr><td><code>strncmp()</code></td><td><code>strncmp(s1, s2, n);</code></td><td>Compares the first n characters</td></tr>
+      </tbody>
+    </table>
+    <p class="strip-caption">these functions save time and keep code compact</p>
+  </section>
+
+  <section>
+    <h2>7. Real-life connection: student registration</h2>
+    <p>Almost every real application — from college web portals to login forms — uses strings. A student's name, city, category, and other text-based information are all data that can be stored as strings.</p>
+    <div class="code-block">#include &lt;stdio.h&gt;
+int main() {
+  char studentName[30], city[20];
+}</div>
+    <h3>why strings matter</h3>
+    <p>Numbers let programs calculate, but strings allow our C code to actually interact and talk with human users. That's why understanding character arrays is worth the effort, even though strings feel confusing at first.</p>
+  </section>
+
+  <section>
+    <h2>8. Top 3 mistakes I used to make</h2>
+    <p>These are the mistakes I personally keep in mind while writing a string program in an exam:</p>
+    <table>
+      <thead><tr><th>Mistake</th><th>What happens</th><th>What to remember</th></tr></thead>
+      <tbody>
+        <tr><td>Comparing strings with <code>==</code></td><td><code>if(str1 == str2)</code> compares memory addresses, not words.</td><td>Use <code>strcmp()</code>.</td></tr>
+        <tr><td>Missing header</td><td>Forgetting <code>#include &lt;string.h&gt;</code> when using <code>strlen()</code> or <code>strcpy()</code>.</td><td>Include <code>&lt;string.h&gt;</code>.</td></tr>
+        <tr><td>Array overflow</td><td>Storing a 25-letter word inside a <code>char name[10]</code> variable.</td><td>Give the array enough space.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>9. Conclusion</h2>
+    <p>Switching from numbers to strings felt like a jump at first, but understanding that a string is just a character array ending with <code>\0</code> made everything click for me. Numbers let programs calculate, but strings let our C code actually interact and talk with human users.</p>
+  </section>
+
+  <section>
+    <h2>My key takeaways</h2>
+    <ul class="takeaways">
+      <li>A string in C is stored using a character array.</li>
+      <li>Every string needs a null character (<code>\0</code>) at the end.</li>
+      <li>The <code>&lt;string.h&gt;</code> header provides useful string functions.</li>
+      <li>String comparison should be done using <code>strcmp()</code>, not <code>==</code>.</li>
+      <li>Enough array space should be provided to avoid overflow.</li>
+    </ul>
+  </section>
+
+  <footer>— Akriti's lab notebook</footer>
+
+</div>
+</body>
+</html>
